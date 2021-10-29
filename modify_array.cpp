@@ -45,9 +45,7 @@ void append(int value)
     n++; // increase size
 }
 
-//--------------------------
-
-
+//---------------------------
 int main()
 { 
     // init array
