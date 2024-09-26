@@ -1,10 +1,9 @@
 #include <iostream>
-// #include <stdlib.h>
 
 using namespace std;
 
 const int MAX = 1000; // hằng số, đồng thời là kích thước tối đa của mảng
-int Arr[MAX];
+int Arr[MAX]; // khai báo mảng Arr có MAX phần tử
 int num; // số phần tử thực dùng
 
 
@@ -24,12 +23,12 @@ void initArray(int a[], int n)
 // In mảng theo hàng ngang
 void showArray(int a[], int n, const string& message)
 {
-    cout << message << endl;
+    cout << message << '\n';
     for (int i = 0; i < n; i++)
     {
         cout << a[i] << ' ';
     }
-    cout << endl;
+    cout << '\n';
 }
 
 
@@ -54,96 +53,75 @@ float average(int a[], int n)
 
 
 // Thêm một phần tử vào cuối mảng
-void append(int value)
+void append(int a[], int *n, int value)
 {
-    if (num < MAX)
+    if (*n == MAX)
     {
-        Arr[num++] = value;
+        cout << "The array is full.\n";
     }
-    else
-    {
-        cout << "The array is full." << endl;
-    }
+    
+    a[(*n)++] = value;
 }
 
 
 // Chèn phần tử mới vào vị trí giữa mảng
-void insert(int value, int pos)
+void insert(int a[], int *n, int position, int value)
 {
-    // Kiểm tra pos nằm ngoài phạm vi cho phép
-    if (pos < 0 || pos > num)
+    // Kiểm tra position nằm ngoài phạm vi cho phép
+    if (position < 0 || position > *n)
     {
-        cout << "Position out of range." << endl;
+        cout << "Position out of range.\n";
         return;
     }
 
     // Kiểm tra mảng đã đầy
-    if (num >= MAX)
+    if (*n >= MAX)
     {
-        cout << "Array is full." << endl;
+        cout << "Array is full.\n";
         return;
     }
 
     // Đẩy các phần tử ra sau một vị trí
-    for (int i = num; i > pos; i--)
+    for (int i = *n; i > position; i--)
     {
-        Arr[i] = Arr[i - 1];
+        a[i] = a[i - 1];
     }
 
     // Chèn phần tử mới vào vị trí trống
-    Arr[pos] = value;
-    num++;
-}
-
-
-// Xoá phần tử đầu tiên
-void removeFirst()
-{
-    if (num == 0)
-    {
-        cout << "Array is empty";
-        return;
-    }
-
-    // Đẩy các phần tử về trước một vị trí
-    for (int i = 1; i < num; i++)
-    {
-        Arr[i - 1] = Arr[i];
-    }
-
-    num--;
+    a[position] = value;
+    (*n)++;
 }
 
 
 // Xoá phần tử cuối
-void removeLast()
+void removeLast(int a[], int *n)
 {
-    if (num == 0)
+    if (*n == 0)
     {
-        cout << "Array is empty";
+        cout << "Array is already empty.\n";
         return;
     }
     
     // Giảm số phần tử
-    num--;
+    (*n)--;
 }
 
 
 // Xoá phần tử tại vị trí cho trước
-void removeAt(int pos)
+void removeAt(int a[], int *n, int position)
 {
-    if (pos < 0 || pos >= num)
+    if (position < 0 || position >= *n)
     {
-        cout << "Position out of range." << endl;
+        cout << "Position out of range.\n";
     }
 
     // Đẩy các phần tử qua trái một vị trí
-    for (int i = pos; i < num - 1; i++)
+    for (int i = position; i < *n - 1; i++)
     {
-        Arr[i] = Arr[i + 1];
+        a[i] = a[i + 1];
     }
 
-    num--;
+    (*n)--;
 }
 
 
@@ -154,29 +132,26 @@ int main()
     showArray(Arr, num, "Initial array:");
 
     int sum = sumArray(Arr, num);
-    cout << "Sum: " << sum << endl;
+    cout << "Sum: " << sum << '\n';
 
     float avg = average(Arr, num);
-    cout << "Average: " << avg << endl;
+    cout << "Average: " << avg << '\n';
 
     int valueToAppend = 999;
-    append(valueToAppend);
+    append(Arr, &num, valueToAppend);
     showArray(Arr, num, "Append:");
 
     int valueToInsert = 777;
     int positionToInsert = 6;
-    insert(valueToInsert, positionToInsert);
+    insert(Arr, &num, positionToInsert, valueToInsert);
     showArray(Arr, num, "Insert:");
 
-    removeFirst();
-    showArray(Arr, num, "Remove first:");
-
-    removeLast();
+    removeLast(Arr, &num);
     showArray(Arr, num, "Remove last:");
 
-    int positionToRemove = 5;
-    removeAt(positionToRemove);
-    showArray(Arr, num, "Remove:");
+    int positionToRemove = 6;
+    removeAt(Arr, &num, positionToRemove);
+    showArray(Arr, num, "Remove at some position:");
 
     return 0;
 }
